@@ -15,8 +15,14 @@ package batchprocessor.command;
 
 import org.w3c.dom.Element;
 
+import batchprocessor.ProcessException;
+
 public class WDCommand extends Command
 {
+	public WDCommand(Element element) throws ProcessException
+	{
+		parse(element);	
+	}
 
 	@Override
 	public String describe() 
@@ -25,9 +31,9 @@ public class WDCommand extends Command
 	}
 	
 	@Override
-	public void parse(Element element) 
-	{
-		
+	public void parse(Element element) throws ProcessException
+	{	
+		throw new ProcessException("");	
 	}
 
 	@Override

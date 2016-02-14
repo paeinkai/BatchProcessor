@@ -18,6 +18,11 @@ import org.w3c.dom.Element;
 public class CmdCommand extends Command 
 {
 
+	public CmdCommand(Element element)
+	{
+		parse(element);
+	}
+	
 	@Override
 	public String describe() 
 	{

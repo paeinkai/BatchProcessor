@@ -19,6 +19,11 @@ import org.w3c.dom.Element;
 public class PipeCommand extends Command
 {
 
+	public PipeCommand(Element element)
+	{
+		parse(element);
+	}
+	
 	@Override
 	public String describe() 
 	{

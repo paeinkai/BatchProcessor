@@ -14,13 +14,15 @@ package batchprocessor.command;
 
 import org.w3c.dom.Element;
 
+import batchprocessor.ProcessException;
+
 public abstract class Command 
 {
 	//prints a command to the console when the Command is executed.
 	public abstract String describe();
 	
 	//parses a given XML element and extracts the information contained therein.
-	public abstract void parse(Element element);
+	public abstract void parse(Element element) throws ProcessException;
 	
 	//executes the command
 	public abstract void execute(String workingDir);

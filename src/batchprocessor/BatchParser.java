@@ -15,8 +15,6 @@ package batchprocessor;
  * element. The actual parsing is delegated to the Command subclass. 
  */
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,7 +30,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import batchprocessor.command.CmdCommand;
 import batchprocessor.command.Command;
+import batchprocessor.command.FileCommand;
+import batchprocessor.command.PipeCommand;
+import batchprocessor.command.WDCommand;
 
 public class BatchParser 
 {
@@ -96,7 +98,46 @@ public class BatchParser
 
 	Command buildCommand(Element element)
 	{
-		return null;
+		Command command = null;
+		String cmdName = element.getNodeName();
+		
+		try
+		{
+			if (cmdName == null)
+			{
+				throw new ProcessException("Unable to parse command from " + element.getTextContent());
+			}
+			else if ("wd".equalsIgnoreCase(cmdName))
+			{
+				System.err.println("Parsing wd");
+				command = new WDCommand(element);
+			}
+			else if ("file".equalsIgnoreCase(cmdName))
+			{
+				System.err.println("Parsing file");
+				command = new FileCommand(element);
+			}
+			else if ("cmd".equalsIgnoreCase(cmdName))
+			{
+				System.err.println("Parsing cmd");
+				command = new CmdCommand(element);
+			}
+			else if ("pipe".equalsIgnoreCase(cmdName))
+			{
+				System.err.println("Parsing pipe");
+				command = new PipeCommand(element);
+			}
+			else
+			{
+				throw new ProcessException("Unknown command " + cmdName + " from: " + element.getBaseURI());
+			}
+			
+		} catch (ProcessException ex)
+		{
+			System.err.println(ex.getMessage());
+		}
+
+		return command;
 	}
 	
 	
