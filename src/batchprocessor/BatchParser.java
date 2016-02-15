@@ -39,7 +39,7 @@ import batchprocessor.command.WDCommand;
 public class BatchParser 
 {
 	
-	Batch buildBatch(File batchFile) 
+	public static Batch buildBatch(File batchFile) 
 	{
 		Batch batch = null;
 		try 
@@ -52,7 +52,7 @@ public class BatchParser
 			Element dNode = doc.getDocumentElement();
 			NodeList nodes = dNode.getChildNodes();
 			
-			batch = new Batch(batchFile.getParent());
+			batch = new Batch();
 			for (int i = 0; i < nodes.getLength(); i++)
 			{
 				Node node = nodes.item(i);
@@ -69,10 +69,7 @@ public class BatchParser
 						return null;
 					}
 				}
-			}
-			
-					
-			
+			}			
 		} catch (FileNotFoundException ex)
 		{
 			System.err.println("Unable to open file: " + batchFile.getName());
@@ -96,7 +93,7 @@ public class BatchParser
 		return batch;
 	}
 
-	Command buildCommand(Element element)
+	static Command buildCommand(Element element)
 	{
 		Command command = null;
 		String cmdName = element.getNodeName();
@@ -135,6 +132,7 @@ public class BatchParser
 		} catch (ProcessException ex)
 		{
 			System.err.println(ex.getMessage());
+			return null;
 		}
 
 		return command;
