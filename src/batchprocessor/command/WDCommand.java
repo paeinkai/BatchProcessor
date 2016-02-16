@@ -20,13 +20,11 @@ import batchprocessor.ProcessException;
 
 public class WDCommand extends Command
 {
-	private String id;
 	private String path;
-
 	
 	public WDCommand(Element element) throws ProcessException
 	{
-		parse(element);	
+		parse(element);
 	}
 
 	@Override
@@ -44,9 +42,8 @@ public class WDCommand extends Command
 		{
 			throw new ProcessException("Missing 'id' attribute in WD command");
 		}
-		System.err.println("ID: " + id);
 		
-		this.path = element.getAttribute("path");
+		path = element.getAttribute("path");
 		if (path == null)
 		{
 			path = "";

@@ -72,7 +72,7 @@ public class BatchParser
 			}			
 		} catch (FileNotFoundException ex)
 		{
-			System.err.println("Unable to open file: " + batchFile.getName());
+			System.err.println("Unable to open file: " + batchFile.getPath());
 			ex.printStackTrace();
 			
 		} catch (ParserConfigurationException ex)
@@ -81,11 +81,11 @@ public class BatchParser
 			ex.printStackTrace();
 		} catch (IOException ex)
 		{
-			System.err.println("");
+			System.err.println(ex.getMessage());
 			ex.printStackTrace();
 		} catch (SAXException ex)
 		{
-			System.err.println("");
+			System.err.println(ex.getMessage());
 			ex.printStackTrace();
 		}
 		

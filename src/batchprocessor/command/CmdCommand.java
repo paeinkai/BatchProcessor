@@ -15,10 +15,18 @@ package batchprocessor.command;
 
 import org.w3c.dom.Element;
 
+import batchprocessor.BatchProcessor;
+import batchprocessor.ProcessException;
+
 public class CmdCommand extends Command 
 {
 
-	public CmdCommand(Element element)
+	private String path;
+	private String args;
+	private String in;
+	private String out;
+	
+	public CmdCommand(Element element) throws ProcessException
 	{
 		parse(element);
 	}
@@ -26,18 +34,39 @@ public class CmdCommand extends Command
 	@Override
 	public String describe() 
 	{
-		return null;
+		return "Command: " + path;
 	}
 	
 	@Override
-	public void parse(Element element) 
+	public void parse(Element element) throws ProcessException
 	{
+		id = element.getAttribute("id");
+		if (id == null || id.isEmpty())
+		{
+			throw new ProcessException("Missing 'id' attribute in CMD command");
+		}
 		
+		path = element.getAttribute("path");
+		if (path == null || path.isEmpty())
+		{
+			throw new ProcessException("Missing 'path' attribute in CMD command");
+		}
+		
+		args = element.getAttribute("args");	
+		in = element.getAttribute("in");
+		out = element.getAttribute("out");
+
 	}
 	
 	@Override
 	public void execute(String workingDir) 
 	{
+		//  = BatchProcessor.batch.getCommands().get(in);
+		
+		
+		ProcessBuilder procBuilder = new ProcessBuilder();
+		
+		
 		
 	}
 

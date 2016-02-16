@@ -25,8 +25,20 @@ public class BatchProcessor
 	
 	public static void executeBatch() 
 	{
-	
-	
+		System.err.println("Executing batch...");
+		
+		try {	
+			for (int c = 0; c < batch.getCommandList().size(); c++)
+			{	
+				batch.getCommandList().get(c).execute(batch.getWorkingDir());	
+			}
+			
+			System.err.println("Finished executing batch.");
+			
+		} catch (Exception ex)
+		{
+			System.err.println("Exiting batch execution due to error.");
+		}
 	}
 	
 	public static void main(String[] args) 

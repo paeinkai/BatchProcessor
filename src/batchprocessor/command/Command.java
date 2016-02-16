@@ -18,6 +18,7 @@ import batchprocessor.ProcessException;
 
 public abstract class Command 
 {
+	protected String id;
 	//prints a command to the console when the Command is executed.
 	public abstract String describe();
 	
@@ -26,4 +27,10 @@ public abstract class Command
 	
 	//executes the command
 	public abstract void execute(String workingDir);
+	
+	public String getID()
+	{
+		return this.id;
+	}
+	
 }

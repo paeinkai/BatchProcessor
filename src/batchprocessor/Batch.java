@@ -34,6 +34,11 @@ public class Batch
 	public void addCommand(Command command) 
 	{
 		commandList.add(command);
+		if (cmdLookup.containsKey(command.getID()))
+		{
+			System.err.println("Warning: duplicate command id, previous value replaced");
+		}
+		cmdLookup.put(command.getID(), command);
 	}
 	
 	public String getWorkingDir()
@@ -49,6 +54,11 @@ public class Batch
 	public Map<String,Command> getCommands()
 	{
 		return cmdLookup;
+	}
+	
+	public List<Command> getCommandList()
+	{
+		return commandList;
 	}
 	
 }
