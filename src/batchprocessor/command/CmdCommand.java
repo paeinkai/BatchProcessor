@@ -13,9 +13,13 @@ package batchprocessor.command;
  * that will be executed in a process.
  */
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.w3c.dom.Element;
 
-import batchprocessor.BatchProcessor;
+import batchprocessor.Batch;
 import batchprocessor.ProcessException;
 
 public class CmdCommand extends Command 
@@ -23,8 +27,8 @@ public class CmdCommand extends Command
 
 	private String path;
 	private String args;
-	private String in;
-	private String out;
+	private String in_file;
+	private String out_file;
 	
 	public CmdCommand(Element element) throws ProcessException
 	{
@@ -53,20 +57,68 @@ public class CmdCommand extends Command
 		}
 		
 		args = element.getAttribute("args");	
-		in = element.getAttribute("in");
-		out = element.getAttribute("out");
+		in_file = element.getAttribute("in");
+		out_file = element.getAttribute("out");
 
 	}
 	
 	@Override
-	public void execute(String workingDir) 
+	public void execute(Batch batch) throws ProcessException
 	{
-		//  = BatchProcessor.batch.getCommands().get(in);
-		
-		
+		List<String> command = new ArrayList<String>();
+		command.add(path);
+		for (String s : args.split(" "))
+		{
+			if (!s.isEmpty())
+			{
+				command.add(s);
+			}
+		}
 		ProcessBuilder procBuilder = new ProcessBuilder();
+		procBuilder.command(command);
+		procBuilder.directory(new File(batch.getWorkingDir()));
 		
+		if (!(in_file == null || in_file.isEmpty()))
+		{
+			if(batch.getCommands().containsKey(in_file))
+			{
+				try
+				{
+					File stdin = new File(procBuilder.directory(),((FileCommand)batch.getCommands().get(in_file)).getPath());
+					procBuilder.redirectInput(stdin);
+				}
+				catch (Exception ex)
+				{
+					throw new ProcessException("Error loading IN file from FileCommand with id '" + in_file + ".");
+				}
+			}
+			else
+			{
+				throw new ProcessException("Unable to locate IN FileCommand with id '" + in_file + ".");
+			}
+		}
 		
+		if (!(out_file == null || out_file.isEmpty()))
+		{
+			if(batch.getCommands().containsKey(out_file))
+			{
+				File stdout = new File(procBuilder.directory(),((FileCommand)batch.getCommands().get(out_file)).getPath());
+				procBuilder.redirectOutput(stdout);
+			}
+			else
+			{
+				throw new ProcessException("Unable to locate OUT FileCommand with id '" + out_file + ".");
+			}
+		}
+		try
+		{
+			Process process = procBuilder.start();
+			process.waitFor();
+		}
+		catch (Exception ex)
+		{
+			throw new ProcessException("Error creating and running process: " + ex.getMessage());
+		}
 		
 	}
 

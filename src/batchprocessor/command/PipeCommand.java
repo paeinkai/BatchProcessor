@@ -16,6 +16,8 @@ package batchprocessor.command;
 
 import org.w3c.dom.Element;
 
+import batchprocessor.Batch;
+
 public class PipeCommand extends Command
 {
 
@@ -37,7 +39,7 @@ public class PipeCommand extends Command
 	}
 	
 	@Override
-	public void execute(String workingDir) 
+	public void execute(Batch batch) 
 	{
 		
 	}

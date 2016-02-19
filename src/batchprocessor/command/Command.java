@@ -14,6 +14,7 @@ package batchprocessor.command;
 
 import org.w3c.dom.Element;
 
+import batchprocessor.Batch;
 import batchprocessor.ProcessException;
 
 public abstract class Command 
@@ -26,7 +27,7 @@ public abstract class Command
 	public abstract void parse(Element element) throws ProcessException;
 	
 	//executes the command
-	public abstract void execute(String workingDir);
+	public abstract void execute(Batch batch) throws ProcessException;
 	
 	public String getID()
 	{

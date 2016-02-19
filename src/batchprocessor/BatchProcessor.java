@@ -2,6 +2,8 @@ package batchprocessor;
 
 
 
+
+
 /*
  * CS 5348 - Operating Systems Concepts
  * Project 1: Batch Language Processing
@@ -15,13 +17,15 @@ package batchprocessor;
  * 	and the execution of those commands.
  */
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import batchprocessor.command.Command;
+
 
 public class BatchProcessor 
 {
-	
-	public static Batch batch;
-	
+	private static Batch batch;
 	
 	public static void executeBatch() 
 	{
@@ -29,32 +33,35 @@ public class BatchProcessor
 		
 		try {	
 			for (int c = 0; c < batch.getCommandList().size(); c++)
-			{	
-				batch.getCommandList().get(c).execute(batch.getWorkingDir());	
+			{
+				Command comm = batch.getCommandList().get(c);
+				System.err.println(comm.describe());
+				comm.execute(batch);
 			}
 			
 			System.err.println("Finished executing batch.");
-			
 		} catch (Exception ex)
 		{
+			//System.err.println(ex.getMessage());
+			ex.printStackTrace();
 			System.err.println("Exiting batch execution due to error.");
 		}
 	}
 	
 	public static void main(String[] args) 
 	{
-		String filename = null;
+		Path batchfile;
 		if (args.length > 0)
 		{
-			filename = args[0];
+			batchfile = Paths.get(args[0]);
 		}
 		else
 		{
-			filename = "work/batch1.dos.xml";
+			batchfile = Paths.get(System.getProperty("user.dir"), "work", "batch1.dos.xml");
 		}
-		File batchfile = new File(filename);
-		batch = BatchParser.buildBatch(batchfile);
 
+		batch = BatchParser.buildBatch(batchfile);
+		executeBatch();
 	}
 
 }

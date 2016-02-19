@@ -13,9 +13,12 @@ package batchprocessor.command;
  * that the batch will execute within.
  */
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.w3c.dom.Element;
 
-import batchprocessor.BatchProcessor;
+import batchprocessor.Batch;
 import batchprocessor.ProcessException;
 
 public class WDCommand extends Command
@@ -30,8 +33,7 @@ public class WDCommand extends Command
 	@Override
 	public String describe() 
 	{
-		return "Working Directory: " + path;
-		
+		return "Working Directory: " + path;	
 	}
 	
 	@Override
@@ -51,9 +53,15 @@ public class WDCommand extends Command
 	}
 
 	@Override
-	public void execute(String workingDir) 
-	{
-		System.err.println(this.describe());
-		BatchProcessor.batch.setWorkingDir(path);
+	public void execute(Batch batch) throws ProcessException
+	{		
+		if (Files.exists(Paths.get(path)))
+		{
+			batch.setWorkingDir(path);
+		}
+		else
+		{
+			throw new ProcessException("Unable to locate or open directory '" + path + "'.");
+		}
 	}		
 }

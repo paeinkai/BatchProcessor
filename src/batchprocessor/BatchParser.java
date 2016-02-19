@@ -15,11 +15,11 @@ package batchprocessor;
  * element. The actual parsing is delegated to the Command subclass. 
  */
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -39,12 +39,12 @@ import batchprocessor.command.WDCommand;
 public class BatchParser 
 {
 	
-	public static Batch buildBatch(File batchFile) 
+	public static Batch buildBatch(Path batchFile) 
 	{
 		Batch batch = null;
 		try 
 		{
-			FileInputStream f_in = new FileInputStream(batchFile);
+			InputStream f_in = Files.newInputStream(batchFile);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(f_in);
@@ -72,7 +72,7 @@ public class BatchParser
 			}			
 		} catch (FileNotFoundException ex)
 		{
-			System.err.println("Unable to open file: " + batchFile.getPath());
+			System.err.println("Unable to open file: " + batchFile);
 			ex.printStackTrace();
 			
 		} catch (ParserConfigurationException ex)
@@ -134,7 +134,6 @@ public class BatchParser
 			System.err.println(ex.getMessage());
 			return null;
 		}
-
 		return command;
 	}
 	

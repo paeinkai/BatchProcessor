@@ -13,12 +13,17 @@ package batchprocessor.command;
  * to a file contained in the batch's working directory
  */
 
+
 import org.w3c.dom.Element;
+
+import batchprocessor.Batch;
+import batchprocessor.ProcessException;
 
 public class FileCommand extends Command
 {
+	private String path;
 
-	public FileCommand(Element element)
+	public FileCommand(Element element) throws ProcessException
 	{
 		parse(element);
 	}
@@ -26,19 +31,33 @@ public class FileCommand extends Command
 	@Override
 	public String describe() 
 	{
-		return null;
+		return "File command: " + path; 
 	}
 	
 	@Override
-	public void parse(Element element) 
+	public void parse(Element element) throws ProcessException
 	{
-		
+		id = element.getAttribute("id");
+		if (id == null || id.isEmpty())
+		{
+			throw new ProcessException("Missing 'id' attribute in FILE command");
+		}
+		path = element.getAttribute("path");
+		if (path == null || path.isEmpty())
+		{
+			throw new ProcessException("Missing 'path' attribute in FILE command");
+		}
 	}
 	
 	@Override
-	public void execute(String workingDir) 
+	public void execute(Batch batch) 
 	{
-		
+
+	}
+	
+	public String getPath()
+	{	
+		return path;
 	}
 
 }

@@ -13,6 +13,7 @@ package batchprocessor;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ public class Batch
 	{
 		workingDir = "";
 		commandList = new ArrayList<Command>();
+		cmdLookup = new HashMap<String,Command>();
 	}
 	
 	public void addCommand(Command command) 

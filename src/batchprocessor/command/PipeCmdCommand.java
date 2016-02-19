@@ -2,6 +2,8 @@ package batchprocessor.command;
 
 import org.w3c.dom.Element;
 
+import batchprocessor.Batch;
+
 /*
  * CS 5348 - Operating Systems Concepts
  * Project 1: Batch Language Processing
@@ -30,7 +32,7 @@ public class PipeCmdCommand extends Command
 	}
 
 	@Override
-	public void execute(String workingDir) 
+	public void execute(Batch batch) 
 	{
 		
 	}
