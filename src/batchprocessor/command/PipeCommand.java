@@ -17,11 +17,12 @@ package batchprocessor.command;
 import org.w3c.dom.Element;
 
 import batchprocessor.Batch;
+import batchprocessor.ProcessException;
 
 public class PipeCommand extends Command
 {
 
-	public PipeCommand(Element element)
+	public PipeCommand(Element element) throws ProcessException
 	{
 		parse(element);
 	}
@@ -29,13 +30,19 @@ public class PipeCommand extends Command
 	@Override
 	public String describe() 
 	{
-		return null;
+//		return null;
+		return "PipeCommand execute PipeCmdCommand";
 	}
 	
 	@Override
-	public void parse(Element element) 
+	public void parse(Element element) throws ProcessException
 	{
+		id = element.getAttribute("id");
+		if (id == null || id.isEmpty()) {
+			throw new ProcessException("Missing id attribute in PIPE command");
+		}
 		
+		PipeCmdCommand pcc = new PipeCmdCommand(element);
 	}
 	
 	@Override
